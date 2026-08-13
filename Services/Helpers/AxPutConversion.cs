@@ -65,7 +65,7 @@ namespace AxiDataPackages.Services.Helpers
 
 
 
-        public object AxGetToPutConversion(string sessionId, string transId, JObject payload)
+        public object AxGetToPutConversion(string sessionId, string transId, JObject payload,string masterFormName = "", bool FormNameAdd = false)
         {
             try
             {
@@ -180,8 +180,24 @@ namespace AxiDataPackages.Services.Helpers
 
                     ["action"] = "create",
 
-                    ["submitdata"] = submitData
+                   // ["submitdata"] = submitData
+
                 };
+
+
+
+                _logger.LogInformation("MasterObject boolean is set to true for this payload : "+transId);
+
+
+
+                _logger.LogInformation("Master Object Name is  : " + masterFormName);
+
+                if (FormNameAdd)
+                {
+                    transactionObject["masterObject"] = masterFormName;
+                }
+
+                transactionObject["submitdata"] = submitData;
 
 
                 //// DATA ARRAY

@@ -685,7 +685,7 @@ namespace AxiDataPackages.Services
                                                 if (Sessionid != null)
                                                 {
 
-                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet);
+                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet, objectValues[i],true);
 
                                                     _logger.LogInformation("AxPutConversion Completed");
                                                 }
@@ -771,7 +771,7 @@ namespace AxiDataPackages.Services
 
                                                 if (Sessionid != null)
                                                 {
-                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet);
+                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet, objectValues[i],true);
 
                                                     _logger.LogInformation("AxPutConversion Completed");
                                                 }
@@ -854,7 +854,7 @@ namespace AxiDataPackages.Services
                                                 if (Sessionid != null)
                                                 {
 
-                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet);
+                                                    axputConvert = _axPutConversion.AxGetToPutConversion(Sessionid, tableName[j], jsonDataAxGet, objectValues[i], true);
 
                                                     _logger.LogInformation("AxPutConversion Completed");
                                                 }

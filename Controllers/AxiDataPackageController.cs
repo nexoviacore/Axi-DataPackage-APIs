@@ -273,7 +273,7 @@ namespace AxiDataPackages.Controllers
 
                         string finalResult = JsonConvert.SerializeObject(resultObj, Formatting.Indented);
 
-                            _logger.LogInformation("Final Export Result : {result}", finalResult);
+                        _logger.LogInformation("Final Export Result : {result}", finalResult);
 
                         //string encryptedResult = _encryptDecrypt.EncryptImplementation(finalResult);
 
@@ -283,20 +283,38 @@ namespace AxiDataPackages.Controllers
 
                         string scriptFolder = Path.Combine(path, "Scripts");
 
-                        //string sqlText = "";
+                        ////string sqlText = "";
+
+                        //Directory.CreateDirectory(scriptFolder);
+
+
+                        //string sqlPathFile = Path.Combine(scriptFolder, "sqlscripts.sql");
+                        ////sqlText = sqlPathFile;
+
+                        //if (!string.IsNullOrEmpty(querys))
+                        //    querys = SqlConversion(querys);
+
+                             
+                        //System.IO.File.WriteAllText(sqlPathFile, querys);
+
 
                         Directory.CreateDirectory(scriptFolder);
 
-
-                        string sqlPathFile = Path.Combine(scriptFolder, "sqlscripts.sql");
-                        //sqlText = sqlPathFile;
-
-                        if (!string.IsNullOrEmpty(querys))
+                        if (!string.IsNullOrWhiteSpace(querys))
+                        {
                             querys = SqlConversion(querys);
 
-                             
-                        System.IO.File.WriteAllText(sqlPathFile, querys);       
-                    
+                            string sqlPathFile = Path.Combine(scriptFolder, "sqlscripts.sql");
+
+                            System.IO.File.WriteAllText(sqlPathFile, querys);
+
+                            _logger.LogInformation("SQL Script Written Successfully");
+                        }
+                        else
+                        {
+                            _logger.LogInformation("No SQL Script data available. Skipping sqlscripts.sql creation.");
+                        }
+
 
                         _logger.LogInformation("Encrypted Export Json Written Successfully");
 
