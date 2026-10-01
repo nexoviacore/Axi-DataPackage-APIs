@@ -11,7 +11,7 @@ namespace AxiDataPackages.Services.Helpers
     {
         private readonly AxDBService _axDBService;
 
-        private const string QUERY_SEPARATOR = "$D#";
+        public string QUERY_SEPARATOR = "$D#";
 
         private readonly ILogger<PackageHelperService> _logger;
 

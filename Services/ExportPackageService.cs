@@ -1005,7 +1005,16 @@ namespace AxiDataPackages.Services
 
                                                     _logger.LogInformation("Adding Flatqueries from userroles To FlatqueryPayload");
 
-                                                    flatQueryPayloads.Add(userRoleData.query);
+                                                    if (flatQueryPayloads.Count == 0)
+                                                    {
+                                                        flatQueryPayloads.Add(userRoleData.query);
+                                                    }
+                                                    else
+                                                    {
+                                                        flatQueryPayloads.Add(_packageHelperService.QUERY_SEPARATOR + userRoleData.query);
+                                                    }
+
+                                                    //flatQueryPayloads.Add(userRoleData.query);
 
                                                 }
                                                 else
@@ -1295,7 +1304,17 @@ namespace AxiDataPackages.Services
                                         _logger.LogInformation("Adding Flat Query Payload");
 
                                         currentPayloads.Add(customPageData.query);
-                                        flatQueryPayloads.Add(customPageData.query);
+
+                                        if (flatQueryPayloads.Count == 0)
+                                        {
+                                            flatQueryPayloads.Add(customPageData.query);
+                                        }
+                                        else
+                                        {
+                                            flatQueryPayloads.Add(_packageHelperService.QUERY_SEPARATOR + customPageData.query);
+                                        }
+
+                                        //flatQueryPayloads.Add(customPageData.query);
                                     }
 
                                     break;
