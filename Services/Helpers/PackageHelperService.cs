@@ -1191,7 +1191,7 @@ namespace AxiDataPackages.Services.Helpers
                 List<string> customPageFiles = new List<string>();
 
 
-                string sql = "SELECT htmlsectionsid,pageno FROM HTMLSECTIONS WHERE caption = @captionName order by createdon asc";
+                string sql = "SELECT htmlsectionsid,pageno FROM HTMLSECTIONS WHERE caption = @captionName order by createdon asc limit 1";
 
                 string[] paramNames = { "@captionName" };
 
@@ -1384,13 +1384,17 @@ namespace AxiDataPackages.Services.Helpers
                     success = false;
                 }
 
-                if (customPageFiles.Count > 0)
-                {
-                    if (!_customPageFiles.ContainsKey(captionName))
-                        _customPageFiles.Add(captionName, customPageFiles);
-                    else
-                        _customPageFiles[captionName].AddRange(customPageFiles);
-                }
+
+                ///Commenting this logic as our new product logic was implemneted in a way where we dont need any hard copy files (We just
+                ///need all html,css,js codes needs to be stored in db already we handled this via axidata file).
+
+                //if (customPageFiles.Count > 0)
+                //{
+                //    if (!_customPageFiles.ContainsKey(captionName))
+                //        _customPageFiles.Add(captionName, customPageFiles);
+                //    else
+                //        _customPageFiles[captionName].AddRange(customPageFiles);
+                //}
 
 
                 return

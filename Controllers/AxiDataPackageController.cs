@@ -137,46 +137,51 @@ namespace AxiDataPackages.Controllers
                     });
                 }
 
-                string axpertWebUrl = _configuration["AxpertURL:AxpertWebURL"];
 
-                try
-                {
-                    string appPath = Path.Combine(axpertWebUrl, payload.AppName);
+                ///As we removed custom page placing logic we may not required this check here.
+                ///Commenting this logic as our new product logic was implemented in a way where we dont need any hard copy files (We just
+                ///need all html,css,js codes needs to be stored in db already we handled this via axidata file).
 
-                    if (string.IsNullOrWhiteSpace(axpertWebUrl))
-                    {
-                        throw new Exception("AxpertWebURL configuration is missing");
-                    }
+                // string axpertWebUrl = _configuration["AxpertURL:AxpertWebURL"];
 
-                    if (!Directory.Exists(appPath))
-                    {
-                        throw new Exception($"Application directory not found : {appPath}");
-                    }
+                //try
+                //{
+                //    string appPath = Path.Combine(axpertWebUrl, payload.AppName);
 
-                    Directory.GetFiles(appPath);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    _logger.LogError(ex, "AxpertWebURL Access Denied");
+                //    if (string.IsNullOrWhiteSpace(axpertWebUrl))
+                //    {
+                //        throw new Exception("AxpertWebURL configuration is missing");
+                //    }
 
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message = "Export Package Failed.",
-                        errormessage = "No read permission for AxpertWebURL application directory"
-                    });
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "AxpertWebURL Validation Failed");
+                //    if (!Directory.Exists(appPath))
+                //    {
+                //        throw new Exception($"Application directory not found : {appPath}");
+                //    }
 
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message = "Export Package Failed.",
-                        errormessage = ex.Message
-                    });
-                }
+                //    Directory.GetFiles(appPath);
+                //}
+                //catch (UnauthorizedAccessException ex)
+                //{
+                //    _logger.LogError(ex, "AxpertWebURL Access Denied");
+
+                //    return BadRequest(new
+                //    {
+                //        success = false,
+                //        message = "Export Package Failed.",
+                //        errormessage = "No read permission for AxpertWebURL application directory"
+                //    });
+                //}
+                //catch (Exception ex)
+                //{
+                //    _logger.LogError(ex, "AxpertWebURL Validation Failed");
+
+                //    return BadRequest(new
+                //    {
+                //        success = false,
+                //        message = "Export Package Failed.",
+                //        errormessage = ex.Message
+                //    });
+                //}
 
                 //sample payload//
                 //{
@@ -273,11 +278,18 @@ namespace AxiDataPackages.Controllers
 
                         string finalResult = JsonConvert.SerializeObject(resultObj, Formatting.Indented);
 
+                        finalResult = finalResult.Replace("\\r\\n", " ");
+                        finalResult = finalResult.Replace("\\\"", "#dq#");
+                        finalResult = finalResult.Replace("\\", "\\\\");
+                        finalResult = finalResult.Replace("#dq#", "\\\"");
+
                         _logger.LogInformation("Final Export Result : {result}", finalResult);
+
+
 
                         //string encryptedResult = _encryptDecrypt.EncryptImplementation(finalResult);
 
-                        _logger.LogInformation("Export Result Encrypted Successfully");
+                       // _logger.LogInformation("Export Result Encrypted Successfully");
 
                         System.IO.File.WriteAllText(filePath, finalResult);
 
@@ -319,26 +331,28 @@ namespace AxiDataPackages.Controllers
                         _logger.LogInformation("Encrypted Export Json Written Successfully");
 
                         ///file copy process
-                        ///
+                        
+                        ///Commenting this logic as our new product logic was implemneted in a way where we dont need any hard copy files (We just
+                        ///need all html,css,js codes needs to be stored in db already we handled this via axidata file).
 
-                        var customPageResult = await _customPageFileCP.CopyCustomPageFiles(payload.AppName, path);
+                        //var customPageResult = await _customPageFileCP.CopyCustomPageFiles(payload.AppName, path);
 
-                        if (!customPageResult.success)
-                        {
-                            if (System.IO.File.Exists(filePath))
-                            {
-                                System.IO.File.Delete(filePath);
+                        //if (!customPageResult.success)
+                        //{
+                        //    if (System.IO.File.Exists(filePath))
+                        //    {
+                        //        System.IO.File.Delete(filePath);
 
-                                _logger.LogInformation("Export File Deleted Due To Custom Page Copy Failure");
-                            }
+                        //        _logger.LogInformation("Export File Deleted Due To Custom Page Copy Failure");
+                        //    }
 
-                            return BadRequest(new
-                            {
-                                success = false,
-                                message = "Export Package Failed.",
-                                errormessage = customPageResult.errorMessage
-                            });
-                        }
+                        //    return BadRequest(new
+                        //    {
+                        //        success = false,
+                        //        message = "Export Package Failed.",
+                        //        errormessage = customPageResult.errorMessage
+                        //    });
+                        //}
 
                         /////
                         ///
